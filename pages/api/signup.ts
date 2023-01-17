@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { User, users } from "./users";
 import { nanoid } from "nanoid";
+import { cors, runMiddleware } from "@/utils/utils";
 
 type Data = {
   message: string;
@@ -11,14 +12,14 @@ const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&.])(?=.*\d)[a-zA-Z@$!%*#?&.\d]{8,}$/;
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await runMiddleware(req, res, cors);
   if (req.method === "POST") {
     let usersIndex = users.length;
     const { email, password, repassword } = req.body;
-    console.log("Received");
     if (password !== repassword) {
       res.status(400).json({ message: "Password doesn't match", body: null });
     } else {
