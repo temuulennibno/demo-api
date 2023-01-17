@@ -1,3 +1,4 @@
+import { cors, runMiddleware } from "@/utils/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { User, users } from "./index";
 
@@ -6,10 +7,11 @@ type Data = {
   body: any;
 };
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await runMiddleware(req, res, cors);
   if (req.method === "POST") {
     const authorization = req.headers.authorization;
     if (!authorization) {
