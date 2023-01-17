@@ -1,10 +1,17 @@
 import Cors from "cors";
 import { NextApiRequest, NextApiResponse } from "next";
+import { LoremIpsum } from "lorem-ipsum";
+
+export const reqMethods: string[] = ["POST", "GET", "HEAD", "PATCH", "DELETE"];
 
 export const cors = Cors({
-  methods: ["POST", "GET", "HEAD"],
+  methods: reqMethods,
 });
 
+export type DefaultData = {
+  message: string;
+  body: any;
+};
 export function runMiddleware(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -20,3 +27,14 @@ export function runMiddleware(
     });
   });
 }
+
+export const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 8,
+    min: 4,
+  },
+  wordsPerSentence: {
+    max: 16,
+    min: 4,
+  },
+});
