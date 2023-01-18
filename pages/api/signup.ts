@@ -18,7 +18,6 @@ export default async function handler(
 ) {
   await runMiddleware(req, res, cors);
   if (req.method === "POST") {
-    let usersIndex = users.length;
     const { email, password, repassword } = req.body;
     if (password !== repassword) {
       res.status(400).json({ message: "Password doesn't match", body: null });
@@ -28,14 +27,13 @@ export default async function handler(
           const emailIndex = users.findIndex((user) => user.email === email);
           if (emailIndex === -1) {
             const user = {
-              id: usersIndex,
+              id: nanoid(),
               email,
               password,
               token: nanoid(),
               tokenExpires: new Date(Date.now() + 1000 * 60 * 10),
             };
-            users[usersIndex] = user;
-            usersIndex++;
+            users.push(user);
             res.send({ message: "Signup success", body: user });
           } else {
             res
