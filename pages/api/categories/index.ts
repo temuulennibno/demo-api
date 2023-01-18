@@ -1,31 +1,30 @@
 import { cors, DefaultData, lorem, runMiddleware } from "@/utils/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "@/utils/auth";
+import { nanoid } from "nanoid";
 
 export let categories = [
   {
-    id: 0,
+    id: nanoid(),
     name: "Технологи",
     description: lorem.generateSentences(2),
   },
   {
-    id: 1,
+    id: nanoid(),
     name: "Цаг үе",
     description: lorem.generateSentences(2),
   },
   {
-    id: 2,
+    id: nanoid(),
     name: "Түүх",
     description: lorem.generateSentences(2),
   },
   {
-    id: 3,
+    id: nanoid(),
     name: "Соёл",
     description: lorem.generateSentences(2),
   },
 ];
-
-let nextId = categories.length;
 
 const DELETE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
   const { id } = req.body;
@@ -54,9 +53,8 @@ const UPDATE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
 
 const CREATE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
   const { name, description } = req.body;
-  let newCategory = { id: nextId, name, description };
+  let newCategory = { id: nanoid(), name, description };
   categories = [...categories, newCategory];
-  nextId++;
   return res.status(200).json({ message: "Success", body: newCategory });
 };
 

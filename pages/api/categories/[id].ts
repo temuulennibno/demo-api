@@ -12,7 +12,7 @@ export default async function handler(
     const { id } = req.query;
     if (!id)
       return res.status(400).json({ message: "Id required", body: null });
-    const filteredCat = categories.filter((item) => item.id === Number(id));
+    const filteredCat = categories.filter((item) => item.id === id);
 
     return res.status(200).json({
       message: "Success",

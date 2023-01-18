@@ -43,10 +43,9 @@ export function auth(
       };
     }
     return { isAuth: true, res: null };
-  } else {
-    return {
-      isAuth: false,
-      res: res.status(400).json({ message: "User not found", body: null }),
-    };
   }
+  return {
+    isAuth: false,
+    res: res.status(403).json({ message: "Invalid token", body: null }),
+  };
 }

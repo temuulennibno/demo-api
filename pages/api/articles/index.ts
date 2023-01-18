@@ -1,10 +1,11 @@
 import { cors, DefaultData, lorem, runMiddleware } from "@/utils/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "@/utils/auth";
+import { nanoid } from "nanoid";
 
 export let articles = [
   {
-    id: 0,
+    id: nanoid(),
     imageUrl: "https://loremflickr.com/640/360",
     categoryId: 0,
     name: lorem.generateSentences(1),
@@ -12,7 +13,7 @@ export let articles = [
     text: lorem.generateParagraphs(10),
   },
   {
-    id: 1,
+    id: nanoid(),
     imageUrl: "https://loremflickr.com/1080/720",
     categoryId: 0,
     name: lorem.generateSentences(1),
@@ -20,7 +21,7 @@ export let articles = [
     text: lorem.generateParagraphs(10),
   },
   {
-    id: 2,
+    id: nanoid(),
     imageUrl: "https://loremflickr.com/1080/1080",
     categoryId: 1,
     name: lorem.generateSentences(1),
@@ -28,7 +29,7 @@ export let articles = [
     text: lorem.generateParagraphs(10),
   },
   {
-    id: 3,
+    id: nanoid(),
     imageUrl: "https://loremflickr.com/720/1080",
     categoryId: 2,
     name: lorem.generateSentences(1),
@@ -67,7 +68,7 @@ const UPDATE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
 const CREATE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
   const { name, description, text, imageUrl, categoryId } = req.body;
   let newArticle = {
-    id: nextId,
+    id: nanoid(),
     name,
     description,
     text,
@@ -75,7 +76,6 @@ const CREATE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
     categoryId,
   };
   articles = [...articles, newArticle];
-  nextId++;
   return res.status(200).json({ message: "Success", body: newArticle });
 };
 
@@ -85,12 +85,12 @@ export default async function handler(
 ) {
   await runMiddleware(req, res, cors);
 
-  console.log(req.headers.authorization);
+  if (req.method === "GET")
+    return res.status(200).json({ message: "Success", body: articles });
+
   const authInfo = auth(req, res);
 
   if (!authInfo.isAuth) return authInfo.res;
-  if (req.method === "GET")
-    return res.status(200).json({ message: "Success", body: articles });
 
   if (req.method === "PATCH") return UPDATE(req, res);
 
