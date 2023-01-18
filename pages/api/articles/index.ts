@@ -42,7 +42,7 @@ let nextId = articles.length;
 const DELETE = (req: NextApiRequest, res: NextApiResponse<DefaultData>) => {
   const { id } = req.body;
   if (!id) return res.status(400).json({ message: "Id required", body: null });
-  articles = articles.filter((item) => item !== id);
+  articles = articles.filter((item) => item.id !== id);
   return res.status(200).json({ message: "Success", body: id });
 };
 
