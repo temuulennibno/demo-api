@@ -24,7 +24,7 @@ export default async function handler(
       res.json({ message: "Email and password doesn't match", body: null });
     } else {
       const token = nanoid();
-      users[index].tokenExpires = new Date(Date.now() + 1000 * 60 * 10);
+      users[index].tokenExpires = new Date(Date.now() + 1000 * 60 * 60);
       users[index].token = token;
       res.status(200);
       res.json({ message: "Success", body: token });
